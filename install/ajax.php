@@ -9,14 +9,11 @@ if (isset($_POST['action']) && $_POST['action'] === '_install_script') {
     $db_username = $_POST['db_username'];
     $db_host = $_POST['db_host'];
     $db_password = $_POST['db_password'];
-
-    $final_url =  str_replace(['install/index.php','install/','install','https','http','www'],'',$_POST['central_domain_url']);
-    $last_chat = substr($final_url, -1);
-    $central_domain_url = ($last_chat === '/') ? substr($_POST['central_domain_url'],0,-1) : $_POST['central_domain_url'];
     $admin_email = $_POST['admin_email'];
     $admin_password = $_POST['admin_password'];
     $admin_username = $_POST['admin_username'];
     $admin_name = $_POST['admin_name'];
+
     try {
         $db = new PDO("mysql:host=$db_host;dbname=$db_name", $db_username, $db_password);
         // set the PDO error mode to exception
@@ -28,8 +25,7 @@ if (isset($_POST['action']) && $_POST['action'] === '_install_script') {
             'database_host' => $db_host,
             'database_name' => $db_name,
             'database_username' => $db_username,
-            'database_password' => $db_password,
-            'central_domain_url' => $central_domain_url
+            'database_password' => $db_password
         ]);
 
         $admin_update_status = setAdminDetails([
@@ -60,7 +56,7 @@ if (isset($_POST['action']) && $_POST['action'] === '_install_script') {
             ],
             [
                 'type' => $admin_update_status && $env_update_status && $import_database ? 'success' : 'danger',
-                'msg' => $admin_update_status && $env_update_status && $import_database ? 'Installation Successful, if you still see install notice in your website, clear your browser cache '.'<a href="'.$installation_path.'">visit website</a> <p>do not forget to setup wildcard subdomain in order to create subdomain by the system automatically. Also you have to setup cron job for subscription system work properly here is article for it <a target="_blank" href="https://bytesed.com/docs/how-to-setup-cron-job-in-laravel-framework-for-tenancyland/"><i class="las la-external-link-alt"></i></a></p>' : 'Installation Failed <br>'
+                'msg' => $admin_update_status && $env_update_status && $import_database ? 'Insallation Succssfull, if you still see install notice in your website, clear your browser cache '.'<a href="'.$installation_path.'">visit website</a>' : 'Installation Failed'
             ]
         ]);
 
@@ -86,18 +82,16 @@ function systemInstall($db_details)
             'YOUR_DATABASE_HOST',
             'YOUR_DATABASE_NAME',
             'YOUR_DATABASE_USERNAME',
-            'YOUR_DATABASE_PASSWORD',
-            'CENTRAL_DOMAIN_NAME'
+            'YOUR_DATABASE_PASSWORD'
         ),array(
-            $db_details['central_domain_url'],
+            'localhost',
             $db_details['database_host'],
             $db_details['database_name'],
             $db_details['database_username'],
-            '"' . $db_details['database_password'] . '"',
-            $db_details['central_domain_url'],
+            '"' . $db_details['database_password'] . '"'
         ), $str);
 
-        if (file_put_contents('../core/.env', $str) != false) {
+        if (file_put_contents('../@core/.env', $str) != false) {
             $status = true;
         }
     }
@@ -120,36 +114,37 @@ function setAdminDetails($db,$admin_details)
     /*----------------------------------------------------
        PREPARE SQL QUERY USING PDO FOR CREATE NEW ADMIN
     ----------------------------------------------------*/
-    $create_admin =  $db->prepare("INSERT INTO `admins` (email,name,username,email_verified,image,password,remember_token,created_at,updated_at) VALUES (:email,:name,:username,:verified,:image,:password,:token,:created,:updated)");
+    $create_admin =  $db->prepare("INSERT INTO `admins` (email,name,username,email_verified,role,image,password,remember_token,created_at,updated_at) VALUES (:email,:name,:username,:verified,:role,:image,:password,:token,:created,:updated)");
 
     /*----------------------------------------------
         ADD NEW SUPER ADMIN WHILE INSTALLATION
     ----------------------------------------------*/
-    $create_admin->execute([
-        ':name' => strip_tags(trim($admin_details['admin_name'])),
-        ':email' => trim($admin_details['admin_email']),
-        ':username' => strip_tags(trim($admin_details['admin_username'])),
-        ':verified' => 1,
-        ':password' => password_hash($admin_details['admin_password'], PASSWORD_BCRYPT),
-        ':image' => null,
-        ':token' => null,
-        ':created' => date('Y-m-d h:i:s'),
-        ':updated' => date('Y-m-d h:i:s'),
-
-    ]);
-    $last_insert_id = $db->lastInsertId();
+   $create_admin->execute([
+       ':name' => strip_tags(trim($admin_details['admin_name'])),
+       ':email' => trim($admin_details['admin_email']),
+       ':username' => strip_tags(trim($admin_details['admin_username'])),
+       ':verified' => 1,
+       ':password' => password_hash($admin_details['admin_password'], PASSWORD_BCRYPT),
+       ':role' => 1,
+       ':image' => null,
+       ':token' => null,
+       ':created' => date('Y-m-d h:i:s'),
+       ':updated' => date('Y-m-d h:i:s'),
+       
+       ]);
+   $last_insert_id = $db->lastInsertId();
     /*--------------------------------------------------------
-       PREAPARE SLQ QUERY FOR ASSIGN SUPER ADMIN ROLE
+       PREAPARE SLQ QUERY FOR ASSIGN SUPER ADMIN ROLE 
     --------------------------------------------------------*/
-    $role_assign = $db->prepare("INSERT INTO `model_has_roles` (role_id,model_type,model_id) VALUES (:role_id,:model,:model_id)");
+   $role_assign = $db->prepare("INSERT INTO `model_has_roles` (role_id,model_type,model_id) VALUES (:role_id,:model,:model_id)");
     /*--------------------------------------------------------
-        ASSIGN SUPER ADMIN ROLE FOR CREATED ADMIN
+        ASSIGN SUPER ADMIN ROLE FOR CREATED ADMIN 
     --------------------------------------------------------*/
     $role_assign->execute([
-        ':role_id' => '1',
-        ':model' => 'App\Models\Admin',
-        ':model_id' => $last_insert_id,
-    ]);
+            ':role_id' => '3',
+            ':model' => 'App\Admin',
+            ':model_id' => $last_insert_id,
+        ]);
     return true;
 }
 

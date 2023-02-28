@@ -3,11 +3,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+   <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">  -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/landlord/frontend/css/plugin.css">
-    <title>Software Install Wizard By bytesed</title>
-    <link rel="preconnect" href="//fonts.gstatic.com">
-    <link href="//fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/frontend/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../assets/frontend/css/font-awesome.min.css">
+    <title>Software Install Wizard By Xgenious</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
 
         :root {
@@ -340,7 +342,7 @@
             content: "\f058";
             margin-right: 0;
             color: #2bad2b;
-            font-family: "Line Awesome Free";
+            font-family: "Font Awesome 5 Free";
         }
 
         ul.check-list li + li {
@@ -391,7 +393,7 @@
         ul.close-list li:before {
             position: static;
             content: "\f057";
-            font-family: "Line Awesome Free";
+            font-family: "Font Awesome 5 Free";
             margin-right: 5px;
             color: red;
         }
@@ -547,20 +549,6 @@
         .action-button.hide {
             display: none;
         }
-        span.text-danger {
-            font-size: 14px;
-            font-weight: 600;
-            color: #c96363;
-            display:block;
-            margin-bottom: 20px;
-        }
-
-        span.text-danger code {
-            background-color: #e7e7dc;
-            padding: 2px 5px;
-            border-radius: 5px;
-            color: #333;
-        }
     </style>
 </head>
 <body>
@@ -586,18 +574,6 @@ function folder_permission($name)
         $response = false;
     }
     return $response;
-}
-
-function central_url()
-{
-    // Append the host(domain name, ip) to the URL.
-    $url = $_SERVER['HTTP_HOST'];
-    // Append the requested resource location to the URL
-    $url.= $_SERVER['REQUEST_URI'];
-
-    $final_url =  str_replace(['install/index.php','install/','install','https','http','www'],'',$url);
-    $last_chat = substr($final_url, -1);
-    return  ($last_chat === '/') ? substr($final_url,0,-1) : $final_url;
 }
 
 function home_base_url()
@@ -631,21 +607,21 @@ function verify_input_fields($all_fields)
 }
 
 $extensions = [
-    'BCMath', 'Ctype', 'JSON', 'Mbstring', 'OpenSSL', 'PDO', 'pdo_mysql', 'Tokenizer', 'XML', 'cURL', 'fileinfo','Json'
+    'BCMath', 'Ctype', 'JSON', 'Mbstring', 'OpenSSL', 'PDO', 'pdo_mysql', 'Tokenizer', 'XML', 'cURL', 'fileinfo'
 ];
 
 $folders = [
-    '../core/bootstrap/cache/', '../core/storage/', '../core/storage/app/', '../core/storage/framework/', '../core/storage/logs/'
+    '../@core/bootstrap/cache/', '../@core/storage/', '../@core/storage/app/', '../@core/storage/framework/', '../@core/storage/logs/'
 ];
 ?>
 <div class="main-area">
     <div class="get-support">
         <div class="icon-wrap">
             <ul class="support-list">
-                <li><a href="//bytesed.com/">Visit Website</a></li>
-                <li><a href="mailto:contact@bytesed.com">Contact Support</a></li>
+                <li><a href="http://xgenious.com/">Visit Website</a></li>
+                <li><a href="mailto:contact@xgenoius.com">Contact Support</a></li>
             </ul>
-            <i class="las la-headset"></i>
+            <i class="fa fa-support"></i>
         </div>
     </div>
     <div class="container">
@@ -653,7 +629,7 @@ $folders = [
             <div class="col-lg-10">
                 <div class="form-outer-wrapper">
                     <div class="brand-logo">
-                        <h2 class="title">Bytesed</h2>
+                        <h2 class="title">XGENIOUS</h2>
                         <p>Software Installation Wizard</p>
                     </div>
                     <form id="msform" action="index.php" method="post">
@@ -688,7 +664,7 @@ $folders = [
                                 </li>
                                 <li> Use on more than one (1) domain.</li>
                             </ul>
-                            <p>For more information, Please Check <a href="//codecanyon.net/licenses/faq">Envato
+                            <p>For more information, Please Check <a href="https://codecanyon.net/licenses/faq">Envato
                                     License FAQ</a></p>
                             <button type="button" class="next action-button">I Agree, Next Step</button>
                         </div>
@@ -698,15 +674,15 @@ $folders = [
                                 <tbody>
                                 <tr>
                                     <td><strong>PHP</strong></td>
-                                    <td>Required <strong>PHP</strong> version 8.0</td>
+                                    <td>Required <strong>PHP</strong> version 7.4</td>
                                     <td>
 
                                         <?php
-                                        $phpversion = version_compare(PHP_VERSION, '8.0', '>=');
+                                        $phpversion = version_compare(PHP_VERSION, '7.4', '>=');
                                         if ($phpversion == true) {
-                                            print '<div class="icon check"><i class="la la-check-circle" aria-hidden="true"></i></div>';
+                                            print '<div class="icon check"><i class="fa fa-check-circle" aria-hidden="true"></i></div>';
                                         } else {
-                                            print '<div class="icon close"><i class="la la-times-circle" aria-hidden="true"></i></div>';
+                                            print '<div class="icon close"><i class="fa fa-times-circle" aria-hidden="true"></i></div>';
                                         }
                                         ?>
                                     </td>
@@ -722,11 +698,11 @@ $folders = [
                                         <td>
                                             <?php
                                             if (extension_check($ext)) {
-                                                print '<div class="icon check"><i class="la la-check-circle" aria-hidden="true"></i></div>';
+                                                print '<div class="icon check"><i class="fa fa-check-circle" aria-hidden="true"></i></div>';
                                             } else {
                                                 $ext_list[] = $ext;
                                                 $ext_errors++;
-                                                print '<div class="icon close"><i class="la la-times-circle" aria-hidden="true"></i></div>';
+                                                print '<div class="icon close"><i class="fa fa-times-circle" aria-hidden="true"></i></div>';
                                             }
                                             ?>
 
@@ -760,11 +736,11 @@ $folders = [
                                         <td>
                                             <?php
                                             if (folder_permission($ext)) {
-                                                print '<div class="icon check"><i class="la la-check-circle" aria-hidden="true"></i></div>';
+                                                print '<div class="icon check"><i class="fa fa-check-circle" aria-hidden="true"></i></div>';
                                             } else {
-                                                $fol_list[] = str_replace('../core/','',$ext);
+                                                $fol_list[] = str_replace('../@core/','',$ext);
                                                 $folder_errors++;
-                                                print '<div class="icon close"><i class="la la-times-circle" aria-hidden="true"></i></div>';
+                                                print '<div class="icon close"><i class="fa fa-times-circle" aria-hidden="true"></i></div>';
                                             }
                                             ?>
                                         </td>
@@ -794,10 +770,10 @@ $folders = [
                                         $database_errors = 0;
                                         $database = file_exists('database.sql');
                                         if ($database == true) {
-                                            print '<div class="icon check"><i class="la la-check-circle" aria-hidden="true"></i></div>';
+                                            print '<div class="icon check"><i class="fa fa-check-circle" aria-hidden="true"></i></div>';
                                         } else {
                                             $database_errors++;
-                                            print '<div class="icon close"><i class="la la-times-circle" aria-hidden="true"></i></div>';
+                                            print '<div class="icon close"><i class="fa fa-times-circle" aria-hidden="true"></i></div>';
                                         }
                                         ?>
                                     </td>
@@ -805,7 +781,7 @@ $folders = [
                                 </tbody>
                             </table>
                             <?php if ($database_errors > 0):?>
-                                <div class="alert alert-danger mt-2" style="text-transform: capitalize;">your installation <strong>database.sql</strong> file is missing, re-download files from codecanyon, or contact support</div>
+                                <div class="alert alert-danger mt-2" style="text-transform: capitalize;">your installation <strong>database.sql</strong> file is missing, redownload files from codecanyon, or contact support</div>
                             <?php endif;?>
                             <button type="button" class="previous action-button">Previous</button>
                             <button type="button" class="next action-button" <?php  if ($database_errors > 0): ?> disabled <?php endif;?>>Next</button>
@@ -819,13 +795,6 @@ $folders = [
                                     <input type="text" name="app_url" id="app_url" class="form-control"
                                            value="<?php echo home_base_url(); ?>">
                                 </div>
-                                <h5>Central Domain URl</h5>
-                                <div class="form-group">
-                                    <label for="app_url">Central DomainL</label>
-                                    <input type="text" name="central_domain_url" id="central_domain_url" class="form-control"
-                                           value="<?php echo central_url(); ?>">
-                                    <span class="text-danger">enter your central domain without <code>https</code> or <code>http</code> or <code>www</code></span>
-                                </div>
                             </div>
                             <div class="form-block">
                                 <h5>Database Information</h5>
@@ -835,16 +804,14 @@ $folders = [
                                            value="localhost" placeholder="Database Host">
                                 </div>
                                 <div class="form-group">
-                                    <label for="database_name">Database Name</label>
-                                    <input type="text" name="database_name" id="database_name"  class="form-control"
-                                           placeholder="Database Name">
-
-                                </div>
-                                <div class="form-group">
                                     <label for="database_username">Database Username</label>
                                     <input type="text" name="database_username" id="database_username"
-                                           class="form-control" placeholder="Database Username" value="root">
-                                    <span class="text-danger">you must have to give database <code>root</code> username and password here in order to create database by the system automatically for tenants.</span>
+                                           class="form-control" placeholder="Database Username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="database_name">Database Name</label>
+                                    <input type="text" name="database_name" id="database_name" class="form-control"
+                                           placeholder="Database Name">
                                 </div>
                                 <div class="form-group">
                                     <label for="database_password">Database Username Password</label>
@@ -874,7 +841,7 @@ $folders = [
                             </div>
                             <div class="message-show" id="message_show"></div>
                             <button type="button" class="previous action-button" id="last_previous">Previous</button>
-                            <button type="button" class="action-button" id="check_database">Check Database Connection</button>
+                            <button type="button" class="action-button" id="check_database">Check Databse Connection</button>
                             <button type="submit" class="action-button hide" id="install_now"> Install Now</button>
                         </div>
                     </form>
@@ -888,13 +855,14 @@ $folders = [
         <div class="row">
             <div class="col-lg-12">
                 <div class="copyright-inner">
-                    &copy; <?php echo date('Y')?> All Right Reserved By <a href="//bytesed.com/">bytesed</a>
+                    &copy; 2021 All Right Reserved By <a href="https://xgenious.com/">XGENIOUS</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script src="../assets/landlord/frontend/js/jquery-3.6.1.min.js"></script>
+<script src="../assets/common/js/jquery-3.6.0.min.js"></script>
+<script src="../assets/common/js/jquery-migrate-3.3.2.min.js"></script>
 <script>
     $(document).ready(function ($) {
         "use strict";
@@ -991,7 +959,6 @@ $folders = [
                         'admin_username' : $('input[name="admin_username"]').val(),
                         'admin_name' : $('input[name="admin_name"]').val(),
                         'installation_path' : "<?php echo home_base_url();?>",
-                        'central_domain_url' : "<?php echo central_url();?>",
                     },
                     success: function (data){
                         $('#message_show').html('');
@@ -1039,7 +1006,6 @@ $folders = [
                 'input[name="database_host"]',
                 'input[name="database_username"]',
                 'input[name="database_name"]',
-                'input[name="central_domain_url"]',
             ];
             var returnVal = true;
             allField.forEach(function (value,index){
